@@ -4,8 +4,8 @@ const db = require('./../connection.js');
 
 db.connect();
 
-router.get('/users', (req, res)=>{
-    db.query(`Select * from users`, (err, result)=>{
+router.get('/acoes', (req, res)=>{
+    db.query(`select * from acao`, (err, result)=>{
         if(!err){
             res.send(result.rows);
         }
@@ -13,8 +13,8 @@ router.get('/users', (req, res)=>{
     db.end;
 });
 
-router.get('/users/:id', (req, res)=>{
-    db.query(`Select * from users where id=${req.params.id}`, (err, result)=>{
+router.get('/acoes/:id', (req, res)=>{
+    db.query(`select * from acao where idAcoes=${req.params.id}`, (err, result)=>{
         if(!err){
             res.send(result.rows);
         }
@@ -22,10 +22,10 @@ router.get('/users/:id', (req, res)=>{
     db.end;
 });
 
-router.post('/users', (req, res)=> {
+router.post('/acoes', (req, res)=> {
     const model = req.body;
-    let insertQuery = `insert into users(id, firstname, lastname, location) 
-                       values(${model.id}, '${model.firstname}', '${model.lastname}', '${model.location}')`;
+    let insertQuery = `insert into acao(idAlimentador, data, qtderacaoArbitraria, racaoArbitrariaLiberada) 
+                       values(${model.idAlimentador}, '${model.data}', '${model.qtderacaoArbitraria}', '${model.racaoArbitrariaLiberada}')`;
 
     db.query(insertQuery, (err, result)=>{
         if(!err){
@@ -36,12 +36,13 @@ router.post('/users', (req, res)=> {
     db.end;
 });
 
-router.put('/users/:id', (req, res)=> {
+router.put('/acoes/:id', (req, res)=> {
     let model = req.body;
-    let updateQuery = `update users
-                       set firstname = '${model.firstname}',
-                       lastname = '${model.lastname}',
-                       location = '${model.location}'
+    let updateQuery = `update acao
+                       set idAlimentador = '${model.idAlimentador}',
+                       data = '${model.data}',
+                       qtderacaoArbitraria = '${model.qtderacaoArbitraria}',
+                       racaoArbitrariaLiberada = '${model.racaoArbitrariaLiberada}'
                        where id = ${model.id}`;
 
     db.query(updateQuery, (err, result)=>{
@@ -53,8 +54,8 @@ router.put('/users/:id', (req, res)=> {
     db.end;
 });
 
-router.delete('/users/:id', (req, res)=> {
-    let insertQuery = `delete from users where id=${req.params.id}`
+router.delete('/acoes/:id', (req, res)=> {
+    let insertQuery = `delete from acao where idAcoes=${req.params.id}`
 
     db.query(insertQuery, (err, result)=>{
         if(!err){
