@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('./../connection.js');
+const db = require('../app/connection.js');
 
 db.connect();
 
