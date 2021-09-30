@@ -6,9 +6,9 @@ const client = new Client({
     port: 5432,
     password: "postgres",
     database: "autopet_feeder"
-});*/
+});
 
-module.exports = client;
+module.exports = client;*/
 
 
 var pg = require('pg')
