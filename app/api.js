@@ -5,21 +5,24 @@ app.listen(3300, ()=>{
     console.log("Server is now listening at port 3300");
 });
 
-const acaoRouter = require('../routes/user.js');
-const alimentadorRouter = require('../routes/user.js');
-const dietaRouter = require('../routes/user.js');
-const petRouter = require('../routes/user.js');
-const racaoRouter = require('../routes/user.js');
-const refeicaoRouter = require('../routes/user.js');
-const sensorRouter = require('../routes/user.js');
-const userRouter = require('../routes/user.js');
+app.use(express.json());
 
-app.use(acaoRouter);
-app.use(alimentadorRouter);
-app.use(dietaRouter);
-app.use(petRouter);
-app.use(racaoRouter);
-app.use(refeicaoRouter);
-app.use(sensorRouter);
+const authRouter = require('../routes/auth.js');
+const userRouter = require('../routes/user.js');
+const commandRouter = require('../routes/command.js');
+const feederRouter = require('../routes/feeder.js');
+const dietRouter = require('../routes/diet.js');
+const petRouter = require('../routes/pet.js');
+const mealRouter = require('../routes/meal.js');
+const readingRouter = require('../routes/reading.js');
+
+
+app.use(authRouter);
 app.use(userRouter);
+app.use(commandRouter);
+app.use(feederRouter);
+app.use(dietRouter);
+app.use(petRouter);
+app.use(mealRouter);
+app.use(readingRouter);
 
