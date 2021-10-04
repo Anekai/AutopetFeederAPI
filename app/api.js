@@ -1,3 +1,4 @@
+require('dotenv').config({ path: '../.env' });
 const express = require('express');
 const app = express();
 
@@ -16,7 +17,6 @@ const petRouter = require('../routes/pet.js');
 const mealRouter = require('../routes/meal.js');
 const readingRouter = require('../routes/reading.js');
 
-
 app.use(authRouter);
 app.use(userRouter);
 app.use(commandRouter);
@@ -25,4 +25,3 @@ app.use(dietRouter);
 app.use(petRouter);
 app.use(mealRouter);
 app.use(readingRouter);
-
