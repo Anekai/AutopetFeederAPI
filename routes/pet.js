@@ -5,62 +5,80 @@ const db = require('../app/connection.js');
 db.connect();
 
 router.get('/pet', (req, res)=>{
-    db.query(`Select * from users`, (err, result)=>{
+    db.query(`select * from pets`, (err, result)=>{
         if(!err){
             res.send(result.rows);
+        } else {
+            console.log(err.message);
+            res.json({error: err.message}).send();
         }
     });
+
     db.end;
 });
 
 router.get('/pet/:id', (req, res)=>{
-    db.query(`Select * from pet where id=${req.params.id}`, (err, result)=>{
+    db.query(`select * from pets where id=${req.params.id}`, (err, result)=>{
         if(!err){
-            res.send(result.rows);
+            res.send(result.rows[0]);
+        } else {
+            console.log(err.message);
+            res.json({error: err.message}).send();
         }
     });
+
     db.end;
 });
 
 router.post('/pet', (req, res)=> {
     const model = req.body;
-    let insertQuery = `insert into pet(id, firstname, lastname, location) 
-                       values(${model.id}, '${model.firstname}', '${model.lastname}', '${model.location}')`;
+    let insertQuery = `insert into petss(name, specie, breed, size, user_id, active) 
+                       values('${model.name}', '${model.specie}', '${model.breed}', '${model.size}', ${model.user_id}, 'T')`;
 
     db.query(insertQuery, (err, result)=>{
         if(!err){
-            res.send('Insertion was successful')
+            res.send('Insertion was successful');
+        } else {
+            console.log(err.message);
+            res.json({error: err.message}).send();
         }
-        else{ console.log(err.message) }
     });
+
     db.end;
 });
 
 router.put('/pet/:id', (req, res)=> {
     let model = req.body;
-    let updateQuery = `update pet
-                       set firstname = '${model.firstname}',
-                       lastname = '${model.lastname}',
-                       location = '${model.location}'
-                       where id = ${model.id}`;
+    let updateQuery = `update pets
+                       set    name = '${model.name}'
+                       ,      specie = '${model.specie}'
+                       ,      breed = '${model.breed}'
+                       ,      size = '${model.size}'
+                       ,      user_id = ${model.user_id}
+                       where  id = ${req.params.id}`;
 
     db.query(updateQuery, (err, result)=>{
         if(!err){
             res.send('Update was successful')
+        } else {
+            console.log(err.message);
+            res.json({error: err.message}).send();
         }
-        else{ console.log(err.message) }
     });
+    
     db.end;
 });
 
-router.delete('/users/:id', (req, res)=> {
-    let insertQuery = `delete from pet where id=${req.params.id}`
+router.delete('/pet/:id', (req, res)=> {
+    let insertQuery = `delete from pets where id=${req.params.id}`
 
     db.query(insertQuery, (err, result)=>{
         if(!err){
             res.send('Deletion was successful')
+        } else {
+            console.log(err.message);
+            res.json({error: err.message}).send();
         }
-        else{ console.log(err.message) }
     })
     db.end;
 });

@@ -9,14 +9,14 @@ const tokenSecret = "autopet-feeder";
 db.connect();
 
 router.get('/login', (req, res) => {
-    db.query(`select * from users where email='${req.query.email}'`, (err, result)=>{
+    db.query(`select * from users where email='${req.body.email}'`, (err, result)=>{
         if (!err) {
             if (!result.rows[0]) {
                 res.status(404).json({error: 'Email não encontrado'}).send();
             } else {
                 var user = result.rows[0];
 
-                bcrypt.compare(req.query.senha, user.senha, (error, match) => {
+                bcrypt.compare(req.body.password, user.password, (error, match) => {
                     if (error) {
                         res.status(500).json(error).send();
                     } else if (match) {
@@ -34,7 +34,7 @@ router.get('/login', (req, res) => {
 });
 
 router.post('/signup', (req, res) => {
-    const model = req.query;
+    const model = req.body;
 
     bcrypt.hash(model.password, rounds, (error, hash) => {
         if (error) {
