@@ -70,7 +70,7 @@ router.put('/pet/:id', (req, res)=> {
 });
 
 router.delete('/pet/:id', (req, res)=> {
-    let insertQuery = `delete from pets where id=${req.params.id}`
+    let insertQuery = `update pets set active = 'F' where id=${req.params.id}`
 
     db.query(insertQuery, (err, result)=>{
         if(!err){
