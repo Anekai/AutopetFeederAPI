@@ -4,64 +4,81 @@ const db = require('../app/connection.js');
 
 db.connect();
 
-router.get('/sensor', (req, res)=>{
-    db.query(`Select * from users`, (err, result)=>{
+router.get('/reading', (req, res)=>{
+    db.query(`select * from readings`, (err, result)=>{
         if(!err){
             res.send(result.rows);
+        } else {
+            console.log(err.message);
+            res.json({error: err.message}).send();
         }
     });
+
     db.end;
 });
 
-router.get('/sensor/:id', (req, res)=>{
-    db.query(`Select * from sensor where id=${req.params.id}`, (err, result)=>{
+router.get('/reading/:id', (req, res)=>{
+    db.query(`select * from readings where id=${req.params.id}`, (err, result)=>{
         if(!err){
-            res.send(result.rows);
+            res.send(result.rows[0]);
+        } else {
+            console.log(err.message);
+            res.json({error: err.message}).send();
         }
     });
+    
     db.end;
 });
 
-router.post('/sensor', (req, res)=> {
+router.post('/reading', (req, res)=> {
     const model = req.body;
-    let insertQuery = `insert into sensor(id, firstname, lastname, location) 
-                       values(${model.id}, '${model.firstname}', '${model.lastname}', '${model.location}')`;
+    let insertQuery = `insert into readings(feeder_id, reading_date, reading_data, active) 
+                       values(${model.feeder_id}, '${model.reading_date}', '${model.reading_data}', 'T')`;
 
     db.query(insertQuery, (err, result)=>{
         if(!err){
-            res.send('Insertion was successful')
+            res.send('Insertion was successful');
+        } else {
+            console.log(err.message);
+            res.json({error: err.message}).send();
         }
-        else{ console.log(err.message) }
     });
+    
     db.end;
 });
 
-router.put('/sensor/:id', (req, res)=> {
+router.put('/reading/:id', (req, res)=> {
     let model = req.body;
-    let updateQuery = `update sensor
-                       set firstname = '${model.firstname}',
-                       lastname = '${model.lastname}',
-                       location = '${model.location}'
-                       where id = ${model.id}`;
+    let updateQuery = `update readings
+                       set    feeder_id = ${model.feeder_id}
+                       ,      reading_date = '${model.reading_date}'
+                       ,      reading_data = '${model.reading_data}'
+                       where  id = ${req.params.id}`;
 
     db.query(updateQuery, (err, result)=>{
         if(!err){
             res.send('Update was successful')
+        } else {
+            console.log(err.message);
+            res.json({error: err.message}).send();
         }
-        else{ console.log(err.message) }
     });
+    
     db.end;
 });
 
-router.delete('/users/:id', (req, res)=> {
-    let insertQuery = `delete from sensor where id=${req.params.id}`
+router.delete('/reading/:id', (req, res)=> {
+    let insertQuery = `update readings set active = 'F' where id=${req.params.id}`;
 
     db.query(insertQuery, (err, result)=>{
         if(!err){
             res.send('Deletion was successful')
+        } else {
+            console.log(err.message);
+            res.json({error: err.message}).send();
         }
-        else{ console.log(err.message) }
-    })
+    });
+
     db.end;
 });
 

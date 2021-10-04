@@ -73,9 +73,12 @@ router.delete('/user/:id', (req, res)=> {
     db.query(insertQuery, (err, result)=>{
         if(!err){
             res.send('Deletion was successful')
+        } else {
+            console.log(err.message);
+            res.json({error: err.message}).send();
         }
-        else{ console.log(err.message) }
-    })
+    });
+
     db.end;
 });
 

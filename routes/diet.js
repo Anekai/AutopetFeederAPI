@@ -4,64 +4,80 @@ const db = require('../app/connection.js');
 
 db.connect();
 
-router.get('/dieta', (req, res)=>{
-    db.query(`Select * from users`, (err, result)=>{
+router.get('/diet', (req, res)=>{
+    db.query(`select * from diets`, (err, result)=>{
         if(!err){
             res.send(result.rows);
+        } else {
+            console.log(err.message);
+            res.json({error: err.message}).send();
         }
     });
+
     db.end;
 });
 
-router.get('/dieta/:id', (req, res)=>{
-    db.query(`Select * from dieta where id=${req.params.id}`, (err, result)=>{
+router.get('/diet/:id', (req, res)=>{
+    db.query(`select * from diets where id=${req.params.id}`, (err, result)=>{
         if(!err){
-            res.send(result.rows);
+            res.send(result.rows[0]);
+        } else {
+            console.log(err.message);
+            res.json({error: err.message}).send();
         }
     });
+
     db.end;
 });
 
-router.post('/dieta', (req, res)=> {
+router.post('/diet', (req, res)=> {
     const model = req.body;
-    let insertQuery = `insert into dieta(id, firstname, lastname, location) 
-                       values(${model.id}, '${model.firstname}', '${model.lastname}', '${model.location}')`;
+    let insertQuery = `insert into diets(name, pet_id, active) 
+                       values('${model.name}', ${model.pet_id}, 'T')`;
 
     db.query(insertQuery, (err, result)=>{
         if(!err){
-            res.send('Insertion was successful')
+            res.send('Insertion was successful');
+        } else {
+            console.log(err.message);
+            res.json({error: err.message}).send();
         }
-        else{ console.log(err.message) }
     });
+    
     db.end;
 });
 
-router.put('/dieta/:id', (req, res)=> {
+router.put('/diet/:id', (req, res)=> {
     let model = req.body;
-    let updateQuery = `update dieta
-                       set firstname = '${model.firstname}',
-                       lastname = '${model.lastname}',
-                       location = '${model.location}'
-                       where id = ${model.id}`;
+    let updateQuery = `update diets
+                       set    name = '${model.name}'
+                       ,      pet_id = ${model.pet_id}
+                       where  id = ${req.params.id}`;
 
     db.query(updateQuery, (err, result)=>{
         if(!err){
             res.send('Update was successful')
+        } else {
+            console.log(err.message);
+            res.json({error: err.message}).send();
         }
-        else{ console.log(err.message) }
     });
+    
     db.end;
 });
 
-router.delete('/users/:id', (req, res)=> {
-    let insertQuery = `delete from dieta where id=${req.params.id}`
+router.delete('/diet/:id', (req, res)=> {
+    let insertQuery = `update diets set active = 'F' where id=${req.params.id}`;
 
     db.query(insertQuery, (err, result)=>{
         if(!err){
             res.send('Deletion was successful')
+        } else {
+            console.log(err.message);
+            res.json({error: err.message}).send();
         }
-        else{ console.log(err.message) }
-    })
+    });
+
     db.end;
 });
 

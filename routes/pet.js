@@ -32,7 +32,7 @@ router.get('/pet/:id', (req, res)=>{
 
 router.post('/pet', (req, res)=> {
     const model = req.body;
-    let insertQuery = `insert into petss(name, specie, breed, size, user_id, active) 
+    let insertQuery = `insert into pets(name, specie, breed, size, user_id, active) 
                        values('${model.name}', '${model.specie}', '${model.breed}', '${model.size}', ${model.user_id}, 'T')`;
 
     db.query(insertQuery, (err, result)=>{
@@ -70,7 +70,7 @@ router.put('/pet/:id', (req, res)=> {
 });
 
 router.delete('/pet/:id', (req, res)=> {
-    let insertQuery = `update pets set active = 'F' where id=${req.params.id}`
+    let insertQuery = `update pets set active = 'F' where id=${req.params.id}`;
 
     db.query(insertQuery, (err, result)=>{
         if(!err){
@@ -79,7 +79,8 @@ router.delete('/pet/:id', (req, res)=> {
             console.log(err.message);
             res.json({error: err.message}).send();
         }
-    })
+    });
+
     db.end;
 });
 
