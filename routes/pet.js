@@ -54,7 +54,6 @@ router.put('/pet/:id', (req, res)=> {
                        ,      specie = '${model.specie}'
                        ,      breed = '${model.breed}'
                        ,      size = '${model.size}'
-                       ,      user_id = ${model.user_id}
                        where  id = ${req.params.id}`;
 
     db.query(updateQuery, (err, result)=>{

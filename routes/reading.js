@@ -47,26 +47,6 @@ router.post('/reading', (req, res)=> {
     db.end;
 });
 
-router.put('/reading/:id', (req, res)=> {
-    let model = req.body;
-    let updateQuery = `update readings
-                       set    feeder_id = ${model.feeder_id}
-                       ,      reading_date = '${model.reading_date}'
-                       ,      reading_data = '${model.reading_data}'
-                       where  id = ${req.params.id}`;
-
-    db.query(updateQuery, (err, result)=>{
-        if(!err){
-            res.send('Update was successful')
-        } else {
-            console.log(err.message);
-            res.json({error: err.message}).send();
-        }
-    });
-    
-    db.end;
-});
-
 router.delete('/reading/:id', (req, res)=> {
     let insertQuery = `update readings set active = 'F' where id=${req.params.id}`;
 
