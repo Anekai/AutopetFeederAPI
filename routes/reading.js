@@ -66,22 +66,20 @@ router.delete('/reading/:id', (req, res)=> {
 
 router.post('/sensor', (req, res)=> {
     const user = req.body;
-    console.log(user)
-    const json = JSON.stringify(user.sensores)
-    console.log(json)
+    console.log(user);
+    const json = JSON.stringify(user.sensores);
+    console.log(json);
     let insertQuery = `insert into sensor(idsensor, idalimentador , data, sensores)
-                       values(default, (select idalimentador from alimentador where serial='${user.serialalimentador}'), '${user.data}', '${json}')`
-    console.log(insertQuery)
+                       values(default, (select idalimentador from alimentador where serial='${user.serialalimentador}'), '${user.data}', '${json}')`;
+    console.log(insertQuery);
     db.query(insertQuery, (err, result)=>{
         if(!err){
-            res.send('{}')
+            res.send('Erro ao cadastrar sensor')
+        } else {
+		    console.log(err.message);
+		    res.send('Sensor cadastrado com sucesso');
         }
-        else{
-		console.log(err.message);
-		res.send('{}');
-	}
-
-    })
+    });
     db.end;
 })
 
