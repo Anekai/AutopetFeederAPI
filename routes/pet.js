@@ -83,4 +83,57 @@ router.delete('/pet/:id', (req, res)=> {
     db.end;
 });
 
+//--------------------------------------------------------------------------------------------------------
+
+router.post('/pet', (req, res)=> {
+    const pet = req.body;
+    console.log(pet)
+    let insertQuery = `insert into pet(idpet, nome, animal, dtnascimento, raca, porte, idusuario, excluido)
+                       values(default, '${pet.nome}', '${pet.animal}', '${pet.dtnascimento}', '${pet.raca}', '${pet.porte}', ${pet.idusuario}, 'false')`
+
+    db.query(insertQuery, (err, result)=>{
+        if(!err){
+            res.send(pet)
+        }
+        else{ console.log(err.message) }
+    })
+    db.end;
+});
+
+router.put('/pet', (req, res)=> {
+    const pet = req.body;
+    console.log(pet)
+    let updateQuery = `update pet set nome='${pet.nome}', animal='${pet.animal}', dtnascimento='${pet.dtnascimento}', raca='${pet.raca}', porte='${pet.porte}' where idpet='${pet.idpet}'`
+
+    db.query(updateQuery, (err, result)=>{
+        if(!err){
+            res.send(pet)
+        }
+        else{ console.log(err.message) }
+    })
+    db.end;
+});
+
+router.delete('/pet/:idpet', (req, res)=> {
+    console.log('O pet com  ID: '+req.params.idpet+' foi excluido')
+    let updateQuery = `update pet set excluido='true' where idpet=${req.params.idpet}`
+    db.query(updateQuery, (err, result)=>{
+        if(!err){
+            res.send('{}')
+        }
+        else{ console.log(err.message) }
+    })
+    db.end;
+});
+
+router.get('/pet/:idusuario', (req, res)=> {
+    console.log('O pet do usuario com  ID: '+req.params.idusuario+' foi solicitado')
+    db.query(`select * from pet where idusuario=${req.params.idusuario} and excluido is false`, (err, result)=>{
+        if(!err){
+            res.send(result.rows);
+        }
+    });
+    db.end;
+});
+
 module.exports = router;

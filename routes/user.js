@@ -82,4 +82,45 @@ router.delete('/user/:id', (req, res)=> {
     db.end;
 });
 
+// ------------------------------------------------------------------------------------------------------
+
+router.get('/usuarios/:id', (req, res)=>{
+    db.query(`Select * from usuario where idusuario=${req.params.id}`, (err, result)=>{
+        if(!err){
+            res.send(result.rows);
+        }
+    });
+    db.end;
+});
+
+
+router.post('/usuario', (req, res)=> {
+    const user = req.body;
+    console.log(user)
+    let insertQuery = `insert into usuario(idUsuario, nome, dtNascimento, email, senha, celular)
+                       values(default, '${user.nome}', '${user.dtnascimento}', '${user.email}', '${user.senha}', '${user.celular}')`
+
+    db.query(insertQuery, (err, result)=>{
+        if(!err){
+            res.send('{}')
+        }
+        else{ console.log(err.message) }
+    })
+    client.end;
+});
+
+router.put('/usuario', (req, res)=> {
+    const user = req.body;
+    let updateQuery = `update usuario set dtNascimento='${user.dtnascimento}', email='${user.email}', senha='${user.senha}', celular='${user.celular}' where idusuario='${user.idusuario}'`
+
+    db.query(updateQuery, (err, result)=>{
+        if(!err){
+	    console.log('A conta do o usuario: '+user.nome+' com a senha: '+user.senha+' foi alualizado')
+            res.send('{}')
+        }
+        else{ console.log(err.message) }
+    })
+    db.end;
+});
+
 module.exports = router;

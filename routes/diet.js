@@ -81,4 +81,68 @@ router.delete('/diet/:id', (req, res)=> {
     db.end;
 });
 
+//---------------------------------------------------------------------------------------------------------------------------
+
+router.get('/dieta/usuario/:idusuario', (req, res)=>{
+    console.log('A dieta para o usuario com ID: '+req.params.idusuario+' foi solicitado')
+    db.query(`select dieta.iddieta, dieta.nome, dieta.idpet from dieta, pet where dieta.idpet=pet.idpet and pet.idusuario=${req.params.idusuario} and dieta.excluido=false`, (err, result)=>{
+        if(!err){
+            res.send(result.rows);
+        }
+    });
+    db.end;
+});
+
+router.get('/dieta/:iddieta', (req, res)=>{
+    console.log('A dieta com ID: '+req.params.iddieta+' foi solicitada')
+    db.query(`select * from dieta where dieta.iddieta=${req.params.idusuario} and excluido=false`, (err, result)=>{
+        if(!err){
+            res.send(result.rows);
+        }
+    });
+    db.end;
+});
+
+router.delete('/dieta/:iddieta', (req, res)=> {
+    console.log('A dieta com  ID: '+req.params.iddieta+' foi excluida')
+    let updateQuery = `update dieta set excluido='true' where iddieta=${req.params.iddieta}; delete from refeicao where iddieta=${req.params.iddieta}`
+    db.query(updateQuery, (err, result)=>{
+        if(!err){
+            res.send('{}')
+        }
+        else{ console.log(err.message) }
+    })
+    db.end;
+});
+
+router.post('/dieta', (req, res)=> {
+    const dieta = req.body;
+    console.log(dieta)
+    let insertQuery = `insert into dieta(iddieta, nome, idpet, excluido)
+                       values(default, '${dieta.nome}', ${dieta.idpet}, 'false')`
+
+    db.query(insertQuery, (err, result)=>{
+        if(!err){
+            res.send(dieta)
+        }
+        else{ console.log(err.message) }
+    })
+    db.end;
+});
+
+router.put('/dieta', (req, res)=> {
+    const dieta = req.body;
+    console.log(dieta)
+    console.log(`A dieta com  ID: ${dieta.iddieta} foi atualizada`)
+    let updateQuery = `update dieta set nome='${dieta.nome}', idpet='${dieta.idpet}' where iddieta='${dieta.iddieta}'`
+
+    db.query(updateQuery, (err, result)=>{
+        if(!err){
+            res.send(dieta)
+        }
+        else{ console.log(err.message) }
+    })
+    db.end;
+});
+
 module.exports = router;

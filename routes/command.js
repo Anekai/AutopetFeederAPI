@@ -82,4 +82,41 @@ router.delete('/command/:id', (req, res)=> {
     db.end;
 });
 
+//---------------------------------------------------------------------------------------------------------------------
+
+router.get('/comando/:serialalimentador', (req, res)=>{
+    console.log('O alimentador de serial: '+req.params.serialalimentador+' fez uma solicitacao de comandos')
+    db.query(`select idcomando,comando from comando, alimentador where comando.idalimentador=alimentador.idalimentador and alimentador.serial='${req.params.serialalimentador}' and comando.comandoexecutado is false order by data desc limit 1`, (err, result)=>{
+        if(!err){
+            res.send(result.rows[0]);
+        }
+    });
+    db.end;
+});
+
+router.post('/comando', (req, res)=> {
+    const comandoReq = req.body;
+    console.log(comandoReq)
+    let insertQuery = `insert into comando(idcomando, idAlimentador, data, comando, comandoExecutado)
+                       values(default, '${comandoReq.idalimentador}', '${comandoReq.data}', '${comandoReq.comando}', '${comandoReq.comandoexecutado}')`
+
+    db.query(insertQuery, (err, result)=>{
+        if(!err){
+            res.send(comandoReq)
+        }
+        else{ console.log(err.message) }
+    })
+    db.end;
+});
+
+router.get('/comando/comandoexecutado/:idComando', (req, res)=>{
+    console.log('O camando com ID: '+req.params.idComando+' foi definido como executado')
+    db.query(`update comando set comandoexecutado='true' where idcomando=${req.params.idComando}`, (err, result)=>{
+        if(!err){
+            res.send('Comando marcado como executado');
+        }
+    });
+    db.end;
+});
+
 module.exports = router;
