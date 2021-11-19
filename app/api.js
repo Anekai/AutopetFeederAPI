@@ -1,12 +1,16 @@
 require('dotenv').config({ path: '../.env' });
 const express = require('express');
 const app = express();
+const bodyParser = require("body-parser");
+
+app.use(bodyParser.json());
 
 app.listen(3300, ()=>{
     console.log("Server is now listening at port 3300");
 });
 
-app.use(express.json());
+//app.use(express.json());
+
 
 const authRouter = require('../routes/auth.js');
 const userRouter = require('../routes/user.js');
