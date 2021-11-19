@@ -2,7 +2,7 @@ require('dotenv').config({ path: '../.env' });
 const express = require('express');
 const app = express();
 
-app.listen(3333, ()=>{
+app.listen(3300, ()=>{
     console.log("Server is now listening at port 3333");
 });
 
