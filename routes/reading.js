@@ -100,7 +100,7 @@ router.get('/sensor/ultimaLeitura/:idalimentador', (req, res)=>{
             res.send(result.rows);
         }
     });
-    client.end;
+    db.end;
 });
 
 router.post('/sensor/temperaturaUmidade/', (req, res)=>{
