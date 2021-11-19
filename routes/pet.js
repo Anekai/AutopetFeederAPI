@@ -4,7 +4,7 @@ const db = require('../app/connection.js');
 
 db.connect();
 
-router.get('/pet', (req, res)=>{
+/*router.get('/pet', (req, res)=>{
     db.query(`select * from pets`, (err, result)=>{
         if(!err){
             res.send(result.rows);
@@ -81,7 +81,7 @@ router.delete('/pet/:id', (req, res)=> {
     });
 
     db.end;
-});
+});*/
 
 //--------------------------------------------------------------------------------------------------------
 
