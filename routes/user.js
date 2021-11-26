@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const rounds = 10;
 
 db.connect();
-
+/*
 router.get('/user', (req, res)=>{
     db.query(`select * from users`, (err, result)=>{
         if(!err){
@@ -31,7 +31,7 @@ router.get('/user/:id', (req, res)=>{
 });
 
 router.put('/user/:id', (req, res)=> {
-    /*bcrypt.hash(req.query.senha, rounds, (error, hash) => {
+    bcrypt.hash(req.query.senha, rounds, (error, hash) => {
         if (error) {
             res.status(500).json(error.message).send();
         } else {
@@ -47,7 +47,7 @@ router.put('/user/:id', (req, res)=> {
             });
             db.end;
         }
-    });*/
+    });
     const model = req.body;
 
     let updateQuery = `update users
@@ -80,7 +80,7 @@ router.delete('/user/:id', (req, res)=> {
     });
 
     db.end;
-});
+});*/
 
 // ------------------------------------------------------------------------------------------------------
 
@@ -106,7 +106,7 @@ router.post('/usuario', (req, res)=> {
         }
         else{ console.log(err.message) }
     })
-    client.end;
+    db.end;
 });
 
 router.put('/usuario', (req, res)=> {
